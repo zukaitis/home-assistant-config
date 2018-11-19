@@ -1,0 +1,80 @@
+homeassistant:
+  name: Home
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  unit_system: metric
+  time_zone: !secret home_time_zone
+  customize: !include customize.yaml
+
+# Enables the frontend
+frontend:
+  javascript_version: latest
+
+# Enables configuration UI
+config:
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  include_used_components: true
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Track the sun
+sun:
+
+# Sensors
+sensor:
+  # Weather prediction
+  - platform: yr
+
+# Text to speech
+tts:
+  - platform: google
+
+# Cloud
+cloud:
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+
+light:
+  - platform: xiaomi_miio
+    name: living_room
+    host: !secret living_room_light_host
+    token: !secret living_room_light_token
+    model: philips.light.bulb
+
+media_player:
+  - platform: mpd
+    name: mopidy
+    host: !secret mopidy_host
+
+input_select:
+  audio_input:
+    name: 'Audio Input'
+    options:
+      - Radio
+      - Spotify
+    initial: Radio
+    icon: mdi:speaker
+
+script:
+  play_lrt_opus:
+    sequence:
+      - service: media_player.play_media
+        data_template:
+          media_content_id: '/mnt/nas/playlist/radio.m3u'
+          media_content_type: 'MEDIA_TYPE_PLAYLIST'

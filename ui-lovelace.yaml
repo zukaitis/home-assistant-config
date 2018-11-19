@@ -1,0 +1,20 @@
+resources:
+  - url: /local/mini-media-player-bundle.js?v=0.9.2
+    type: module
+
+title: Home
+views:
+- type: horizontal-stack
+  cards:
+    - type: entities
+      entities:
+        - entity: light.living_room
+          name: Living Room
+        - input_select.audio_input
+    - type: "custom:mini-media-player"
+      entity: media_player.mopidy
+      name: Mopidy
+      icon: mdi:speaker
+      artwork: cover
+      show_source: true
+      hide_power: true
