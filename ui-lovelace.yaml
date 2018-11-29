@@ -7,14 +7,62 @@ views:
 - type: horizontal-stack
   cards:
     - type: entities
+      # title: Lights
+      # show_header_toggle: false
       entities:
         - entity: light.living_room
+          name: Lights
+          icon: none
+        - entity: input_number.light_color_temperature
+          name:  Color Temperature
+          icon: mdi:thermometer
+        - entity: input_boolean.auto_temperature_control
+          name: Automatic Color Temperature Control
+          icon: mdi:clock
+    - type: horizontal-stack
+      cards:
+        - type: light
+          entity: light.living_room
+          name: Kitchen
+        - type: light
+          entity: light.living_room
           name: Living Room
-        - input_select.audio_input
-    - type: "custom:mini-media-player"
-      entity: media_player.mopidy
-      name: Mopidy
-      icon: mdi:speaker
-      artwork: cover
-      show_source: true
-      hide_power: true
+    - type: vertical-stack
+      cards:
+        - type: entities
+          # title: Media Player
+          # show_header_toggle: false
+          entities:
+            - entity: input_boolean.media_player_on
+              name: Media Player
+              icon: none
+            - entity: input_select.audio_input
+              name: Mode
+              icon: mdi:speaker
+            - entity: input_number.media_player_volume
+              name: Volume
+              icon: mdi:volume
+        - type: "custom:mini-media-player"
+          entity: media_player.mopidy
+          name: Volume
+          more_info: false
+          hide_power: true 
+          hide_controls: true
+          hide_media_info: true
+          hide_info: true
+        - type: "custom:mini-media-player"
+          entity: media_player.mopidy
+          name: Radio
+          icon: mdi:radio
+          show_source: true
+          hide_power: true
+          hide_controls: true
+          hide_volume: true
+          scroll_info: true
+        - type: custom:mini-media-player
+          entity: media_player.spotify
+          name: Spotify
+          artwork: cover
+          hide_volume: true
+          hide_power: true
+          show_progress: true

@@ -1,0 +1,13 @@
+
+- id: automation0
+  alias: Adjust light color temperature
+  trigger:
+  - platform: state
+    entity_id: input_number.light_color_temperature
+  action:
+  - service: light.turn_on
+    # Note the use of 'data_template:' below rather than the normal 'data:' if you weren$
+    data_template:
+      entity_id: light.living_room
+      kelvin: "{{ trigger.to_state.state | int }}"
+

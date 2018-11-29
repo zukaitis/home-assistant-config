@@ -1,3 +1,8 @@
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+
 homeassistant:
   name: Home
   latitude: !secret home_latitude
@@ -9,6 +14,7 @@ homeassistant:
 # Enables the frontend
 frontend:
   javascript_version: latest
+  themes: !include themes.yaml
 
 # Enables configuration UI
 config:
@@ -46,10 +52,6 @@ tts:
 # Cloud
 cloud:
 
-group: !include groups.yaml
-automation: !include automations.yaml
-script: !include scripts.yaml
-
 light:
   - platform: xiaomi_miio
     name: living_room
@@ -61,6 +63,10 @@ media_player:
   - platform: mpd
     name: mopidy
     host: !secret mopidy_host
+  - platform: spotify
+    name: spotify
+    client_id: !secret spotify_client_id
+    client_secret: !secret spotify_client_secret
 
 input_select:
   audio_input:
@@ -71,10 +77,21 @@ input_select:
     initial: Radio
     icon: mdi:speaker
 
-script:
-  play_lrt_opus:
-    sequence:
-      - service: media_player.play_media
-        data_template:
-          media_content_id: '/mnt/nas/playlist/radio.m3u'
-          media_content_type: 'MEDIA_TYPE_PLAYLIST'
+input_number:
+  light_color_temperature:
+    mode: slider
+    min: 3000
+    max: 5700
+    step: 100
+    unit_of_measurement: K
+  media_player_volume:
+    mode: slider
+    min: 0
+    max: 100
+    step: 1
+
+input_boolean:
+  auto_temperature_control:
+    initial: on
+  media_player_on:
+    initial: off
