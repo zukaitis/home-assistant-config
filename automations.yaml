@@ -1,4 +1,3 @@
-
 - id: automation0
   alias: Adjust light color temperature
   trigger:
@@ -6,8 +5,57 @@
     entity_id: input_number.light_color_temperature
   action:
   - service: light.turn_on
-    # Note the use of 'data_template:' below rather than the normal 'data:' if you weren$
     data_template:
       entity_id: light.living_room
-      kelvin: "{{ trigger.to_state.state | int }}"
-
+      kelvin: '{{ trigger.to_state.state | int }}'
+- id: '1543655336930'
+  alias: MediaPlayer_turnOn
+  trigger:
+  - entity_id: input_boolean.media_player_on
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: media_player.mopidy
+    service: media_player.turn_on
+- id: '1543656635822'
+  alias: MediaPlayer_turnOff
+  trigger:
+  - entity_id: input_boolean.media_player_on
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: media_player.mopidy
+    service: media_player.turn_off
+  - data: {}
+    service: shell_command.stop_spotifyd
+- id: '1543664616446'
+  alias: MediaPlayer_switchToSpotify
+  trigger:
+  - entity_id: input_select.audio_input
+    platform: state
+    to: Spotify
+  condition: []
+  action:
+  - data:
+      entity_id: media_player.mopidy
+    service: media_player.media_pause
+  - data: {}
+    service: shell_command.start_spotifyd
+- id: '1543675263356'
+  alias: MediaPlayer_switchToRadio
+  trigger:
+  - entity_id: input_select.audio_input
+    platform: state
+    to: Radio
+  condition: []
+  action:
+  - service: shell_command.stop_spotifyd
+  - data:
+      entity_id: media_player.mopidy
+    service: media_player.media_play

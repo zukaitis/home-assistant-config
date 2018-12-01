@@ -95,3 +95,8 @@ input_boolean:
     initial: on
   media_player_on:
     initial: off
+
+shell_command:
+  start_spotifyd: 'sudo /home/homeassistant/.homeassistant/shell_scripts/start_spotifyd.sh'
+  stop_spotifyd: 'sudo /home/homeassistant/.homeassistant/shell_scripts/stop_spotifyd.sh'
+
