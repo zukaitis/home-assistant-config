@@ -1,0 +1,54 @@
+type: custom:vertical-stack-in-card
+cards:
+  - type: entities
+    entities:
+      - entity: input_boolean.media_player_on
+        name: Media Player
+        icon: none
+  - type: conditional
+    conditions:
+      - entity: media_player.mopidy
+        state_not: "off"
+    card:
+      type: entities
+      entities:
+        - entity: input_select.audio_input
+          name: Mode
+          icon: mdi:speaker
+        - type: "custom:mini-media-player"
+          entity: media_player.mopidy
+          name: Volume
+          group: true
+          more_info: false
+          hide_power: true
+          hide_controls: true
+          hide_media_info: true
+          hide_info: true
+  - type: conditional
+    conditions:
+      - entity: media_player.mopidy
+        state: "playing"
+    card:
+      type: "custom:mini-media-player"
+      entity: media_player.mopidy
+      name: Radio
+      icon: mdi:radio
+      more_info: false
+      show_source: small
+      hide_power: true
+      hide_controls: true
+      hide_volume: true 
+      scroll_info: true
+  - type: conditional
+    conditions:
+      - entity: media_player.mopidy
+        state: "paused"
+    card:
+      type: "custom:mini-media-player"
+      entity: media_player.spotify
+      name: Spotify
+      more_info: false
+      artwork: cover
+      hide_volume: true  
+      hide_power: true
+      show_progress: true

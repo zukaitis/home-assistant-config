@@ -38,7 +38,7 @@ history:
 logbook:
 
 # Track the sun
-sun:
+#sun:
 
 # Sensors
 sensor:
@@ -54,9 +54,29 @@ cloud:
 
 light:
   - platform: xiaomi_miio
-    name: living_room
-    host: !secret living_room_light_host
-    token: !secret living_room_light_token
+    name: living_room_0
+    host: !secret light_bulb0_host
+    token: !secret light_bulb0_token
+    model: philips.light.bulb
+  - platform: xiaomi_miio
+    name: living_room_1
+    host: !secret light_bulb1_host
+    token: !secret light_bulb1_token
+    model: philips.light.bulb
+  - platform: xiaomi_miio
+    name: kitchen_2
+    host: !secret light_bulb2_host
+    token: !secret light_bulb2_token
+    model: philips.light.bulb
+  - platform: xiaomi_miio
+    name: kitchen_3
+    host: !secret light_bulb3_host
+    token: !secret light_bulb3_token
+    model: philips.light.bulb
+  - platform: xiaomi_miio
+    name: kitchen_4
+    host: !secret light_bulb4_host
+    token: !secret light_bulb4_token
     model: philips.light.bulb
 
 media_player:

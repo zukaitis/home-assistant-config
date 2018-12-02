@@ -1,0 +1,30 @@
+type: vertical-stack
+cards:
+  - type: custom:vertical-stack-in-card
+    cards:
+       - type: entities
+         entities:
+           - entity: group.all_lights
+             name: Lights
+             icon: none
+       - type: conditional
+         conditions:
+           - entity: group.all_lights
+             state: on
+         card:
+           type: entities
+           entities:
+             - entity: input_number.light_color_temperature
+               name:  Color Temperature
+               icon: mdi:thermometer
+             - entity: input_boolean.auto_temperature_control
+               name: Automatic Color Temperature Control
+               icon: mdi:clock
+  - type: horizontal-stack
+    cards:
+      - type: light
+        entity: light.living_room_0
+        name: Kitchen
+      - type: light
+        entity: light.living_room_1
+        name: Living Room
