@@ -1,13 +1,27 @@
-- id: automation0
-  alias: Adjust light color temperature
+- id: 'automation0'
+  alias: Lights_setColorTemperature
   trigger:
   - platform: state
     entity_id: input_number.light_color_temperature
   action:
-  - service: light.turn_on
-    data_template:
-      entity_id: light.living_room
+  - data_template:
+      entity_id: light.non_existent{% if is_state('light.living_room_0', 'on') %}, light.living_room_0{% endif %}{% if is_state('light.living_room_1', 'on') %}, light.living_room_1{% endif %}{% if is_state('light.kitchen_2', 'on') %}, light.kitchen_2{% endif %}{% if is_state('light.kitchen_3', 'on') %}, light.kitchen_3{% endif %}{% if is_state('light.kitchen_4', 'on') %}, light.kitchen_4{% endif %}
       kelvin: '{{ trigger.to_state.state | int }}'
+    service: light.turn_on
+- id: 'automation1'
+  alias: UI_displayColorTemperature
+  trigger:
+  - platform: state
+    entity_id: group.all_lights
+  condition:
+  - condition: state
+    entity_id: switch.circadian_lighting_control
+    state: 'on'
+  action:
+  - data_template:
+      entity_id: input_number.light_color_temperature
+      value: '{{ states.sensor.circadian_values.attributes.colortemp | int }}'
+    service: input_number.set_value
 - id: '1543655336930'
   alias: MediaPlayer_turnOn
   trigger:

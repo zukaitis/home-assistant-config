@@ -80,11 +80,11 @@ light:
     model: philips.light.bulb
 
 media_player:
-  - platform: mpd
-    name: mopidy
+  - name: mopidy
+    platform: mpd
     host: !secret mopidy_host
-  - platform: spotify
-    name: spotify
+  - name: spotify
+    platform: spotify
     client_id: !secret spotify_client_id
     client_secret: !secret spotify_client_secret
 
@@ -111,12 +111,27 @@ input_number:
     step: 1
 
 input_boolean:
-  auto_temperature_control:
-    initial: on
   media_player_on:
     initial: off
+
+circadian_lighting:
+  min_colortemp: 3000
+  max_colortemp: 6500
+  interval: 60
+  transition: 60
+
+switch:
+  - platform: circadian_lighting
+    name: control
+    lights_ct:
+      - light.living_room_0
+      - light.living_room_1
+      - light.kitchen_2
+      - light.kitchen_3
+      - light.kitchen_4
+    disable_brightness_adjust: true
+
 
 shell_command:
   start_spotifyd: 'sudo /home/homeassistant/.homeassistant/shell_scripts/start_spotifyd.sh'
   stop_spotifyd: 'sudo /home/homeassistant/.homeassistant/shell_scripts/stop_spotifyd.sh'
-

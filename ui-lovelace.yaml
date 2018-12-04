@@ -6,7 +6,17 @@ resources:
 
 title: Home Assistant
 views:
-- type: horizontal-stack
+- title: Home
+  icon: mdi:home
   cards:
     - !include light_cards.yaml
     - !include media_player_cards.yaml
+- title: Lights
+  icon: mdi:lightbulb
+  cards:
+    - !include light_cards.yaml
+- title: Media Player
+  icon: mdi:music-note
+  cards:
+    - !include media_player_cards.yaml
+

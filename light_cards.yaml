@@ -17,8 +17,8 @@ cards:
              - entity: input_number.light_color_temperature
                name:  Color Temperature
                icon: mdi:thermometer
-             - entity: input_boolean.auto_temperature_control
-               name: Automatic Color Temperature Control
+             - entity: switch.circadian_lighting_control
+               name: Circadian Lighting
                icon: mdi:clock
   - type: horizontal-stack
     cards:
