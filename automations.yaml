@@ -1,14 +1,46 @@
-- id: 'automation0'
-  alias: Lights_setColorTemperature
+- id: automation0
+  alias: Lights_setColorTemperatureForActiveLights
   trigger:
   - platform: state
     entity_id: input_number.light_color_temperature
   action:
   - data_template:
-      entity_id: light.non_existent{% if is_state('light.living_room_0', 'on') %}, light.living_room_0{% endif %}{% if is_state('light.living_room_1', 'on') %}, light.living_room_1{% endif %}{% if is_state('light.kitchen_2', 'on') %}, light.kitchen_2{% endif %}{% if is_state('light.kitchen_3', 'on') %}, light.kitchen_3{% endif %}{% if is_state('light.kitchen_4', 'on') %}, light.kitchen_4{% endif %}
+      entity_id: light.non_existent{% if is_state('light.living_room_0', 'on') %},
+        light.living_room_0{% endif %}{% if is_state('light.living_room_1', 'on')
+        %}, light.living_room_1{% endif %}{% if is_state('light.kitchen_2', 'on')
+        %}, light.kitchen_2{% endif %}{% if is_state('light.kitchen_3', 'on') %},
+        light.kitchen_3{% endif %}{% if is_state('light.kitchen_4', 'on') %}, light.kitchen_4{%
+        endif %}
       kelvin: '{{ trigger.to_state.state | int }}'
     service: light.turn_on
-- id: 'automation1'
+- id: automation2
+  alias: Lights_setColorTemperatureForActivatedLight
+  trigger:
+  - platform: state
+    entity_id: light.living_room_0
+    to: 'on'
+  - platform: state
+    entity_id: light.living_room_1
+    to: 'on'
+  - platform: state
+    entity_id: light.kitchen_2
+    to: 'on'
+  - platform: state
+    entity_id: light.kitchen_3
+    to: 'on'
+  - platform: state
+    entity_id: light.kitchen_4
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: switch.circadian_lighting_control
+    state: 'off'
+  action:
+  - data_template:
+      entity_id: '{{ trigger.entity_id }}'
+      kelvin: '{{ states.input_number.light_color_temperature.state | int }}'
+    service: light.turn_on
+- id: automation1
   alias: UI_displayColorTemperature
   trigger:
   - platform: state
@@ -26,7 +58,6 @@
   alias: MediaPlayer_turnOn
   trigger:
   - entity_id: input_boolean.media_player_on
-    from: 'off'
     platform: state
     to: 'on'
   condition:
@@ -41,7 +72,6 @@
   alias: MediaPlayer_turnOff
   trigger:
   - entity_id: input_boolean.media_player_on
-    from: 'on'
     platform: state
     to: 'off'
   condition: []

@@ -52,6 +52,10 @@ tts:
 # Cloud
 cloud:
 
+# -------------------
+# LIGHTS
+# --------------------
+
 light:
   - platform: xiaomi_miio
     name: living_room_0
@@ -78,6 +82,46 @@ light:
     host: !secret light_bulb4_host
     token: !secret light_bulb4_token
     model: philips.light.bulb
+  - platform: group
+    name: living_room
+    entities:
+      - light.living_room_0
+      - light.living_room_1
+  - platform: group
+    name: kitchen
+    entities:
+      - light.kitchen_2
+      - light.kitchen_3
+      - light.kitchen_4
+
+circadian_lighting:
+  min_colortemp: 3000
+  max_colortemp: 6500
+  interval: 60
+  transition: 60
+
+switch:
+  - platform: circadian_lighting
+    name: control
+    lights_ct:
+      - light.living_room_0
+      - light.living_room_1
+      - light.kitchen_2
+      - light.kitchen_3
+      - light.kitchen_4
+    disable_brightness_adjust: true
+
+input_number:
+  light_color_temperature:
+    mode: slider
+    min: 3000
+    max: 5700
+    step: 100
+    unit_of_measurement: K
+
+# -------------------
+# MEDIA PLAYER
+# --------------------
 
 media_player:
   - name: mopidy
@@ -97,40 +141,9 @@ input_select:
     initial: Radio
     icon: mdi:speaker
 
-input_number:
-  light_color_temperature:
-    mode: slider
-    min: 3000
-    max: 5700
-    step: 100
-    unit_of_measurement: K
-  media_player_volume:
-    mode: slider
-    min: 0
-    max: 100
-    step: 1
-
 input_boolean:
   media_player_on:
     initial: off
-
-circadian_lighting:
-  min_colortemp: 3000
-  max_colortemp: 6500
-  interval: 60
-  transition: 60
-
-switch:
-  - platform: circadian_lighting
-    name: control
-    lights_ct:
-      - light.living_room_0
-      - light.living_room_1
-      - light.kitchen_2
-      - light.kitchen_3
-      - light.kitchen_4
-    disable_brightness_adjust: true
-
 
 shell_command:
   start_spotifyd: 'sudo /home/homeassistant/.homeassistant/shell_scripts/start_spotifyd.sh'
