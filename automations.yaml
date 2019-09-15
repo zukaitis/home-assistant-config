@@ -81,6 +81,8 @@
     service: media_player.turn_off
   - data: {}
     service: shell_command.stop_spotifyd
+  - data: {}
+    service: shell_command.refresh_radio_buttons
 - id: '1543664616446'
   alias: MediaPlayer_switchToSpotify
   trigger:

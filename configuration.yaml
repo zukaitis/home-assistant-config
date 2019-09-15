@@ -148,3 +148,4 @@ input_boolean:
 shell_command:
   start_spotifyd: 'sudo /home/homeassistant/.homeassistant/shell_scripts/start_spotifyd.sh'
   stop_spotifyd: 'sudo /home/homeassistant/.homeassistant/shell_scripts/stop_spotifyd.sh'
+  refresh_radio_buttons: !secret refresh_radio_buttons_command

@@ -1,0 +1,19 @@
+# This file is generated automatically, do not edit it by hand
+- name: BBC Radio 1X
+  type: source
+  id: "BBC Radio 1X"
+- name: BBC Radio 6
+  type: source
+  id: "BBC Radio 6"
+- name: LRT Opus
+  type: source
+  id: "LRT Opus"
+- name: M1 Plius
+  type: source
+  id: "M1 Plius"
+- name: Rock FM
+  type: source
+  id: "Rock FM"
+- name: Start FM
+  type: source
+  id: "Start FM"
