@@ -9,15 +9,20 @@ homeassistant:
   longitude: !secret home_longitude
   unit_system: metric
   time_zone: !secret home_time_zone
-  customize: !include customize.yaml
+
+lovelace:
+  mode: yaml
 
 # Enables the frontend
 frontend:
-  javascript_version: latest
   themes: !include themes.yaml
 
 # Enables configuration UI
 config:
+
+resources:
+  - url: /local/mini-media-player-bundle.js?v=1.11.0
+    type: module
 
 # Checks for available updates
 # Note: This component will send some information about your system to
@@ -28,29 +33,17 @@ updater:
   # Optional, allows Home Assistant developers to focus on popular components.
   include_used_components: true
 
-# Allows you to issue voice commands from the frontend in enabled browsers
-conversation:
-
 # Enables support for tracking state changes over time
 history:
 
 # View all events in a logbook
 logbook:
 
-# Track the sun
-#sun:
-
 # Sensors
 sensor:
-  # Weather prediction
-  - platform: yr
-
-# Text to speech
-tts:
-  - platform: google
-
-# Cloud
-cloud:
+  - platform: time_date
+    display_options:
+      - 'time'
 
 # -------------------
 # LIGHTS
@@ -58,41 +51,49 @@ cloud:
 
 light:
   - platform: xiaomi_miio
-    name: living_room_0
+    name: bulb0
     host: !secret light_bulb0_host
     token: !secret light_bulb0_token
     model: philips.light.bulb
   - platform: xiaomi_miio
-    name: living_room_1
+    name: bulb1
     host: !secret light_bulb1_host
     token: !secret light_bulb1_token
     model: philips.light.bulb
   - platform: xiaomi_miio
-    name: kitchen_2
+    name: bulb2
     host: !secret light_bulb2_host
     token: !secret light_bulb2_token
     model: philips.light.bulb
   - platform: xiaomi_miio
-    name: kitchen_3
+    name: bulb3
     host: !secret light_bulb3_host
     token: !secret light_bulb3_token
     model: philips.light.bulb
   - platform: xiaomi_miio
-    name: kitchen_4
+    name: bulb4
     host: !secret light_bulb4_host
     token: !secret light_bulb4_token
     model: philips.light.bulb
   - platform: group
     name: living_room
     entities:
-      - light.living_room_0
-      - light.living_room_1
+      - light.bulb0
+      - light.bulb1
   - platform: group
-    name: kitchen
+    name: work_room
     entities:
-      - light.kitchen_2
-      - light.kitchen_3
-      - light.kitchen_4
+      - light.bulb2
+      - light.bulb3
+      - light.bulb4
+  - platform: group
+    name: all
+    entities:
+      - light.bulb0
+      - light.bulb1
+      - light.bulb2
+      - light.bulb3
+      - light.bulb4
 
 circadian_lighting:
   min_colortemp: 3000
@@ -104,11 +105,11 @@ switch:
   - platform: circadian_lighting
     name: control
     lights_ct:
-      - light.living_room_0
-      - light.living_room_1
-      - light.kitchen_2
-      - light.kitchen_3
-      - light.kitchen_4
+      - light.bulb0
+      - light.bulb1
+      - light.bulb2
+      - light.bulb3
+      - light.bulb4
     disable_brightness_adjust: true
 
 input_number:
@@ -127,10 +128,6 @@ media_player:
   - name: mopidy
     platform: mpd
     host: !secret mopidy_host
-  - name: spotify
-    platform: spotify
-    client_id: !secret spotify_client_id
-    client_secret: !secret spotify_client_secret
 
 input_select:
   audio_input:
@@ -144,8 +141,20 @@ input_select:
 input_boolean:
   media_player_on:
     initial: off
+  weekday_alarm_enabled:
+    initial: on
+  weekend_alarm_enabled:
+    initial: on
+
+input_datetime:
+  weekday_alarm_time:
+    name: Weekday Alarm
+    has_date: false
+    has_time: true
+  weekend_alarm_time:
+    name: Weekend Alarm
+    has_date: false
+    has_time: true
 
 shell_command:
-  start_spotifyd: 'sudo /home/homeassistant/.homeassistant/shell_scripts/start_spotifyd.sh'
-  stop_spotifyd: 'sudo /home/homeassistant/.homeassistant/shell_scripts/stop_spotifyd.sh'
-  refresh_radio_buttons: !secret refresh_radio_buttons_command
+  refresh_radio_buttons: '/home/homeassistant/.homeassistant/shell_scripts/refresh_radio_station_buttons.sh /var/www/nextcloud/user_data/admin/files/radio'

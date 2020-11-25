@@ -5,11 +5,11 @@
     entity_id: input_number.light_color_temperature
   action:
   - data_template:
-      entity_id: light.non_existent{% if is_state('light.living_room_0', 'on') %},
-        light.living_room_0{% endif %}{% if is_state('light.living_room_1', 'on')
-        %}, light.living_room_1{% endif %}{% if is_state('light.kitchen_2', 'on')
-        %}, light.kitchen_2{% endif %}{% if is_state('light.kitchen_3', 'on') %},
-        light.kitchen_3{% endif %}{% if is_state('light.kitchen_4', 'on') %}, light.kitchen_4{%
+      entity_id: light.non_existent{% if is_state('light.bulb0', 'on') %},
+        light.bulb0{% endif %}{% if is_state('light.bulb1', 'on')
+        %}, light.bulb1{% endif %}{% if is_state('light.bulb2', 'on')
+        %}, light.bulb2{% endif %}{% if is_state('light.bulb3', 'on') %},
+        light.bulb3{% endif %}{% if is_state('light.bulb4', 'on') %}, light.bulb4{%
         endif %}
       kelvin: '{{ trigger.to_state.state | int }}'
     service: light.turn_on
@@ -17,19 +17,19 @@
   alias: Lights_setColorTemperatureForActivatedLight
   trigger:
   - platform: state
-    entity_id: light.living_room_0
+    entity_id: light.bulb0
     to: 'on'
   - platform: state
-    entity_id: light.living_room_1
+    entity_id: light.bulb1
     to: 'on'
   - platform: state
-    entity_id: light.kitchen_2
+    entity_id: light.bulb2
     to: 'on'
   - platform: state
-    entity_id: light.kitchen_3
+    entity_id: light.bulb3
     to: 'on'
   - platform: state
-    entity_id: light.kitchen_4
+    entity_id: light.bulb4
     to: 'on'
   condition:
   - condition: state
@@ -44,7 +44,7 @@
   alias: UI_displayColorTemperature
   trigger:
   - platform: state
-    entity_id: group.all_lights
+    entity_id: light.all
   condition:
   - condition: state
     entity_id: switch.circadian_lighting_control
@@ -76,13 +76,11 @@
     to: 'off'
   condition: []
   action:
-  - data:
-      entity_id: media_player.mopidy
-    service: media_player.turn_off
-  - data: {}
-    service: shell_command.stop_spotifyd
-  - data: {}
-    service: shell_command.refresh_radio_buttons
+    - data:
+        entity_id: media_player.mopidy
+      service: media_player.turn_off
+    - data: {}
+      service: shell_command.refresh_radio_buttons
 - id: '1543664616446'
   alias: MediaPlayer_switchToSpotify
   trigger:
@@ -91,20 +89,66 @@
     to: Spotify
   condition: []
   action:
-  - data:
-      entity_id: media_player.mopidy
-    service: media_player.media_pause
-  - data: {}
-    service: shell_command.start_spotifyd
+    - data:
+        entity_id: media_player.mopidy
+      service: media_player.media_pause
 - id: '1543675263356'
   alias: MediaPlayer_switchToRadio
   trigger:
-  - entity_id: input_select.audio_input
-    platform: state
-    to: Radio
+    - entity_id: input_select.audio_input
+      platform: state
+      to: Radio
   condition: []
   action:
-  - service: shell_command.stop_spotifyd
-  - data:
-      entity_id: media_player.mopidy
-    service: media_player.media_play
+    - data:
+        entity_id: media_player.mopidy
+      service: media_player.media_play
+- id: weekday-alarm-clock
+  alias: 'Weekday alarm'
+  initial_state: 'true'
+  trigger:
+    platform: template
+    value_template: "{{ states('sensor.time') == ( states.input_datetime.weekday_alarm_time.attributes.timestamp ) | timestamp_custom('%H:%M', False) }}"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.weekday_alarm_enabled
+        state: 'on'
+      - condition: time
+        weekday:
+         - mon
+         - tue
+         - wed
+         - thu
+         - fri
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.media_player_on
+    - service: light.turn_on
+      data:
+        entity_id: light.work_room
+- id: weekend-alarm-clock
+  alias: 'Weekend alarm'
+  initial_state: 'true'
+  trigger:
+    platform: template
+    value_template: "{{ states('sensor.time') == ( states.input_datetime.weekend_alarm_time.attributes.timestamp ) | timestamp_custom('%H:%M', False) }}"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.weekend_alarm_enabled
+        state: 'on'
+      - condition: time
+        weekday:
+         - sat
+         - sun
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.media_player_on
+    - service: light.turn_on
+      data:
+        entity_id: light.work_room

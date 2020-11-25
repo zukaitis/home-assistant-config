@@ -1,25 +1,28 @@
-type: custom:vertical-stack-in-card
+type: vertical-stack
 cards:
   - type: entities
     entities:
       - entity: input_boolean.media_player_on
         name: Media Player
         icon: none
+        tap_action: none
   - type: conditional
     conditions:
       - entity: input_boolean.media_player_on
-        state: on
+        state: 'on'
     card:
       type: entities
       entities:
         - entity: input_select.audio_input
           name: Mode
           icon: mdi:speaker
-        - type: "custom:mini-media-player"
-          entity: media_player.mopidy
+          tap_action: none
+        - entity: media_player.mopidy
+          type: 'custom:mini-media-player'
           name: Volume
           group: true
           more_info: false
+          tap_action: false
           hide:
             source: true
             power: true
@@ -27,46 +30,29 @@ cards:
             info: true
             icon: true
             name: true
+            progress: true
   - type: conditional
     conditions:
       - entity: input_select.audio_input
-        state: "Radio"
+        state: 'Radio'
       - entity: input_boolean.media_player_on
-        state: on
+        state: 'on'
     card:
-      type: "custom:mini-media-player"
+      type: 'custom:mini-media-player'
       entity: media_player.mopidy
       name: Radio
       icon: mdi:radio
       more_info: false 
       scroll_info: true
+      tap_action: false
       hide:
         controls: true
         power: true
         volume: true
         name: true
         source: true
+        progress: true
       shortcuts:
-        columns: 1
+        columns: 2
         buttons:
           !include radio_station_buttons.yaml
-  - type: conditional
-    conditions:
-      - entity: input_select.audio_input
-        state: "Spotify"
-      - entity: input_boolean.media_player_on
-        state: on
-    card:
-      type: entities
-      entities:
-        - type: "custom:mini-media-player"
-          entity: media_player.spotify
-          name: Spotify
-          more_info: false
-          artwork: cover
-          hide_volume: true  
-          hide_power: true
-          show_progress: true
-        - type: 'custom:spotify-card'
-          client_id: !secret spotify_client_id
-          device: hippo

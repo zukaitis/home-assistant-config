@@ -1,0 +1,22 @@
+type: vertical-stack
+cards:
+  - type: entities
+    title: Alarm Clock
+    entities:
+      - entity: input_boolean.weekday_alarm_enabled
+        name: Weekday Alarm
+        icon: mdi:alarm
+        tap_action: none
+      - entity: input_datetime.weekday_alarm_time
+        name: Weekday Alarm Time
+        icon: mdi:clock
+        tap_action: none
+      - type: divider
+      - entity: input_boolean.weekend_alarm_enabled
+        name: Weekend Alarm
+        icon: mdi:alarm
+        tap_action: none
+      - entity: input_datetime.weekend_alarm_time
+        name: Weekend Alarm Time
+        icon: mdi:clock
+        tap_action: none

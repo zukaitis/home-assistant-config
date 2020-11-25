@@ -1,26 +1,24 @@
 resources:
-  - url: /local/mini-media-player-bundle.js?v=1.3.0
+  - url: /local/mini-media-player-bundle.js?v=1.11.0
     type: module
-  - url: /local/vertical-stack-in-card.js?v=0.1.3
-    type: js
-  - url: /local/compact-custom-header.js?v=1.3.6
-    type: module
-  - type: module
-    url: https://cdn.jsdelivr.net/gh/custom-cards/spotify-card@1.8/dist/spotify-card.umd.js
 
 title: Home Assistant
 views:
-- title: Home
-  icon: mdi:home
-  cards:
-    - !include light_cards.yaml
-    - !include media_player_cards.yaml
-- title: Lights
-  icon: mdi:lightbulb
-  cards:
-    - !include light_cards.yaml
-- title: Media Player
-  icon: mdi:music-note
-  cards:
-    - !include media_player_cards.yaml
+  - title: Home
+    icon: mdi:home
+    cards:
+      - !include light_cards.yaml
+      - !include media_player_cards.yaml
+  - title: Lights
+    icon: mdi:lightbulb
+    cards:
+      - !include light_cards.yaml
+  - title: Media Player
+    icon: mdi:music-note
+    cards:
+      - !include media_player_cards.yaml
+  - title: Alarm Clock
+    icon: mdi:alarm
+    cards:
+      - !include alarm_clock_cards.yaml
 

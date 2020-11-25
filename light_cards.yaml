@@ -1,16 +1,16 @@
 type: vertical-stack
 cards:
-  - type: custom:vertical-stack-in-card
+  - type: vertical-stack
     cards:
        - type: entities
          entities:
-           - entity: group.all_lights
+           - entity: light.all
              name: Lights
              icon: none
        - type: conditional
          conditions:
-           - entity: group.all_lights
-             state: on
+           - entity: light.all
+             state: 'on'
          card:
            type: entities
            entities:
@@ -23,8 +23,8 @@ cards:
   - type: horizontal-stack
     cards:
       - type: light
-        entity: light.kitchen
-        name: Kitchen
+        entity: light.work_room
+        name: Work Room
       - type: light
         entity: light.living_room
         name: Living Room
